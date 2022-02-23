@@ -1,5 +1,5 @@
 from unittest.mock import patch
-from src.publisher import MessageSender
+from src.rmq_conn import MessageSender
 import os
 import sys
 import json
@@ -9,7 +9,7 @@ import random
 @patch.dict(os.environ, {
     'ENV': 'LOCAL'
 })
-def test_publish_message():
+def test_publisher_send_message():
     # Get the path name
     pathname = os.path.dirname(sys.argv[0])
 
@@ -38,8 +38,32 @@ def test_publish_message():
     basic_message_sender.declare_queue('mock')
 
     # Send a message to the queue.
-    basic_message_sender.send_message(
+    assert basic_message_sender.send_message(
         exchange="", routing_key='mock', body=json.dumps(unicorn))
 
+
+def test_publisher_declare_queue():
+    basic_message_sender = MessageSender(
+        "broker-id",
+        "mock",
+        "mock",
+        "region"
+    )
+
+    # Declare a queue
+    assert basic_message_sender.declare_queue('mock')
+
+
+def test_publisher_close_queue():
+    basic_message_sender = MessageSender(
+        "broker-id",
+        "mock",
+        "mock",
+        "region"
+    )
+
+    # Declare a queue
+    basic_message_sender.declare_queue('mock')
+
     # Close connections.
-    basic_message_sender.close()
+    assert basic_message_sender.close()

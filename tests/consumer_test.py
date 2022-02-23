@@ -1,6 +1,6 @@
 from unittest.mock import patch
-from src.publisher import MessageSender
-from src.consumer import MessageReceiver
+from src.rmq_conn import MessageSender
+from src.rmq_conn import MessageReceiver
 import os
 import sys
 import json
@@ -10,7 +10,7 @@ import random
 @patch.dict(os.environ, {
     'ENV': 'LOCAL'
 })
-def test_consume_message():
+def test_consumer_get_message():
     # Get the path name
     pathname = os.path.dirname(sys.argv[0])
 
@@ -48,11 +48,23 @@ def test_consume_message():
     # Create Basic Message Receiver which creates a connection
     # and channel for consuming messages.
     basic_message_receiver = MessageReceiver(
-         "broker-id",
+        "broker-id",
         "mock",
         "mock",
         "region"
     )
 
     # Consume the message that was sent.
-    basic_message_receiver.get_message('mock')
+    assert basic_message_receiver.get_message('mock')
+
+
+def test_consumer_close_queue():
+    basic_message_receiver = MessageReceiver(
+        "broker-id",
+        "mock",
+        "mock",
+        "region"
+    )
+
+    # Close connections.
+    assert basic_message_receiver.close()

@@ -12,6 +12,7 @@ These instructions will get you a copy of the project up and running on your loc
 - python 3.9
 - pip
 - vscode
+- docker (to run local tests)
 
 ### Installing
 
@@ -30,17 +31,25 @@ cd amazonmq-api-example
 To start to code you need to install the requirements and de dev requirements:
 
 ``` bash
-make requirements
-make requirementsdev
+pip install -r requirements.txt
+pip install -r requirements_dev.txt
 ```
 
-## TBD: Running the tests
+## Running the tests
 
-To run the tests you need to execute:
+To run the you will need a container running rabbitmq. To start the container you need to execute:
 
 ``` bash
-make test
+docker run -d --rm  --hostname mock-rabbit --name mock-rabbit -e RABBITMQ_DEFAULT_USER=mock -e RABBITMQ_DEFAULT_PASS=mock -p 5671:5671 -p 5672:5672 rabbitmq:latest
 ```
+
+Now you can run the tests:
+
+``` bash
+tox
+```
+
+> **_NOTE:_**  After the tests you can stop the container with the command `docker stop mock-rabbit`.
 
 ### And coding style tests
 

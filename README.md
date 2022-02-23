@@ -1,5 +1,8 @@
 # AmazonMQ API Example
 
+![Github Workflow](https://github.com/claick-oliveira/amazonmq-api-example/workflows/Run%20RabbitMQ%20messaging%20tests/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 This is an example for python api to publish/consume RabbitMQ messages.
 
 ## Getting Started
